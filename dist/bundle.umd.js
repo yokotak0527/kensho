@@ -1,5 +1,8 @@
-var yokotak0527 = (function (exports) {
-  'use strict';
+(function (global, factory) {
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+  typeof define === 'function' && define.amd ? define(['exports'], factory) :
+  (global = global || self, factory(global.yokotak0527 = {}));
+}(this, (function (exports) { 'use strict';
 
   const ruleBook = new Map();
   const rule = {
@@ -280,7 +283,10 @@ var yokotak0527 = (function (exports) {
       };
   })();
   class Kensho {
-      constructor(formSelector) {
+      constructor(formSelector, option = {}) {
+          option = Object.assign({
+              search: true
+          }, option);
           if (typeof formSelector === 'string') {
               const _form = document.querySelector(formSelector);
               if (_form === null)
@@ -292,7 +298,9 @@ var yokotak0527 = (function (exports) {
               this.form.setAttribute('autocomplete', 'off');
           this.inputsRules = new Map();
           this.form.classList.add('kensho-form');
-          this.addFromCustomAttrs(this.search());
+          if (option.search) {
+              this.addFromCustomAttrs(this.search());
+          }
           return this;
       }
       static validate(ruleName, ...args) {
@@ -307,14 +315,6 @@ var yokotak0527 = (function (exports) {
       static use(pluginName, ...args) {
           const plugin = Kensho.plugin.get(pluginName).bind(Kensho);
           return plugin(...args);
-      }
-      parseAttrStr2Arr(value) {
-          value = value.trim()
-              .replace(/\s*([0-9a-z\-_]+)\s*,/gmi, '\'$1\',')
-              .replace(/\s*([0-9a-zA-Z\-_]+)$/, '\'$1\'');
-          value = `[${value}]`
-              .replace(/'/g, '"');
-          return JSON.parse(value);
       }
       addFromCustomAttrs(CustomAttrs) {
           const attrPrefix = Kensho.config.customAttrPrefix;
@@ -424,6 +424,9 @@ var yokotak0527 = (function (exports) {
           if (param.inputElement instanceof HTMLInputElement) {
               param.inputElement = [param.inputElement];
           }
+          else if (param.inputElement instanceof HTMLSelectElement) {
+              param.inputElement = [param.inputElement];
+          }
           else if (param.inputElement instanceof NodeList) {
               if (param.inputElement.length === 0)
                   throw new Error('inputElement parameter length is 0');
@@ -486,10 +489,19 @@ var yokotak0527 = (function (exports) {
           const unit = Object.assign({}, param, {
               tagName,
               type,
+              error: [],
               displayError: param.errorElement !== undefined
           });
           this.inputsRules.set(unit.name, unit);
           return unit;
+      }
+      hasError() {
+          let hasError = false;
+          this.inputsRules.forEach((val, key) => {
+              if (val.error.length > 0)
+                  hasError = true;
+          });
+          return hasError;
       }
       getRuleUnit(ruleUnitName) {
           const unit = this.inputsRules.get(ruleUnitName);
@@ -512,16 +524,23 @@ var yokotak0527 = (function (exports) {
               }
           }
           if (unit.type === 'checkbox') {
-              if (unit.inputElement[0].checked) {
-                  value = unit.inputElement[0].value;
+              const elem = unit.inputElement[0];
+              if (elem.checked) {
+                  value = elem.value;
               }
+          }
+          if (unit.type === 'select') {
+              const elem = unit.inputElement[0];
+              value = elem.options[elem.options.selectedIndex].value;
           }
           return value;
       }
       clear(unit) {
           unit.error = [];
           unit.errorElement.innerHTML = '';
-          if (unit.errorElement !== undefined) ;
+      }
+      allClear() {
+          this.inputsRules.forEach((val, key) => this.clear(this.getRuleUnit(key)));
       }
       validate(ruleUnitName) {
           const unit = this.getRuleUnit(ruleUnitName);
@@ -539,6 +558,9 @@ var yokotak0527 = (function (exports) {
           }
           return unit.error.length === 0;
       }
+      allValidate() {
+          this.inputsRules.forEach((val, key) => this.validate(key));
+      }
       displayError(unit) {
           if (!unit.displayError || unit.error.length === 0)
               return undefined;
@@ -553,6 +575,34 @@ var yokotak0527 = (function (exports) {
           const error = Kensho.config.verbose ? errors.join('') : `<${wrapper}>${unit.errorMessage.default}</${wrapper}>`;
           unit.errorElement.innerHTML = error;
       }
+      parseAttrStr2Arr(value) {
+          value = value.trim()
+              .replace(/\s*([0-9a-z\-_]+)\s*,/gmi, '\'$1\',')
+              .replace(/\s*([0-9a-zA-Z\-_]+)$/, '\'$1\'')
+              .replace(/\/(.+)\/([gimsuy]*)/, '"/$1/$2"');
+          value = `[${value}]`
+              .replace(/'/g, '"');
+          const returnVal = JSON.parse(value).map(elem => this.parseString2rightType(elem));
+          return returnVal;
+      }
+      parseString2rightType(val) {
+          if (Array.isArray(val)) {
+              val = val.map(v => this.parseString2rightType(v));
+          }
+          else if (typeof val === 'object') {
+              for (const key in val) {
+                  val[key] = this.parseString2rightType(val[key]);
+              }
+          }
+          else if (typeof val === 'string') {
+              const match = (val.match(/(\/.+\/)([gimsuy]*)/));
+              if (match !== null) {
+                  match[1] = match[1].replace(/^\//, '').replace(/\/$/, '');
+                  val = match[2] === '' ? new RegExp(match[1]) : new RegExp(match[1], match[2]);
+              }
+          }
+          return val;
+      }
   }
   Kensho.config = config;
   Kensho.rule = rule;
@@ -566,6 +616,6 @@ var yokotak0527 = (function (exports) {
 
   exports.Kensho = Kensho;
 
-  return exports;
+  Object.defineProperty(exports, '__esModule', { value: true });
 
-}({}));
+})));
