@@ -34,7 +34,7 @@ export interface InputRuleUnitType {
   valueFilter   : Function | undefined
 }
 
-const __unitNameSeed = (() => {
+const _unitNameSeed_ = (() => {
   const list:string[] = []
   const makeSeed = ():string => {
     let seed = `k_${Math.floor(Math.random() * 1000).toString().padStart(4, '0')}`
@@ -139,7 +139,7 @@ export class Kensho {
       }
 
       // parse event -----------------------------------------------------------
-      let rawEvent:AddFunctionParamArg['event'] | undefined = _inputElm.getAttribute(`${attrPrefix}event`) !== null ? _inputElm.getAttribute(`${attrPrefix}event`) : undefined
+      let rawEvent:string | string[] | undefined = _inputElm.getAttribute(`${attrPrefix}event`) !== null ? _inputElm.getAttribute(`${attrPrefix}event`) : undefined
       if (typeof rawEvent === 'string') {
         rawEvent = this.parseAttrStr2Arr<Exclude<AddFunctionParamArg['event'], string>>(rawEvent)
       }
@@ -296,7 +296,7 @@ export class Kensho {
     }
 
     // setup name --------------------------------------------------------------
-    if (param.name === undefined) param.name = __unitNameSeed()
+    if (param.name === undefined) param.name = _unitNameSeed_()
 
     // setup tagName -----------------------------------------------------------
     const tagName = param.inputElement[0].tagName.toLowerCase()
@@ -391,7 +391,9 @@ export class Kensho {
   */
   clear (unit:InputRuleUnitType): void {
     unit.error = []
-    unit.errorElement.innerHTML = ''
+    if (unit.displayError) {
+      unit.errorElement.innerHTML = ''
+    }
   }
 
   /**
@@ -442,7 +444,7 @@ export class Kensho {
     const wrapper = Kensho.config.errorMessageWrapper
     for (const ruleName of unit.error) {
       if (ruleName === 'default') continue
-      const msg:string = unit.errorMessage[ruleName] === undefined ? `The value does not meet "${ruleName}" validation rule.` : unit.errorMessage[ruleName]
+      const msg:string = unit.errorMessage[ruleName] === undefined ? `The value failed "${ruleName}" validation rule.` : unit.errorMessage[ruleName]
       errors.push(`<${wrapper}>${msg}</${wrapper}>`)
     }
     const error = Kensho.config.verbose ? errors.join('') : `<${wrapper}>${unit.errorMessage.default}</${wrapper}>`

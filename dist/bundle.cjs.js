@@ -149,17 +149,54 @@ const age = (value, { max = 125 }, Kensho) => {
     }
     return value <= max;
 };
+<<<<<<< HEAD
 const equal = (value, { others }) => {
+=======
+const equal = (value, { others, isInput = true }) => {
+>>>>>>> master
     let result = true;
     if (typeof others === 'string')
         others = [others];
     for (const other of others) {
+<<<<<<< HEAD
         if (value !== other) {
+=======
+        let otherValue;
+        if (isInput) {
+            otherValue = document.querySelector(other).value;
+        }
+        else {
+            otherValue = other;
+        }
+        if (value !== otherValue) {
+>>>>>>> master
             result = false;
             break;
         }
     }
     return result;
+<<<<<<< HEAD
+=======
+};
+const letters = (value, { range = {} }) => {
+    range = Object.assign({
+        min: -1,
+        max: -1
+    }, range);
+    range.min = typeof range.min === 'string' ? parseInt(range.min, 10) : range.min;
+    range.max = typeof range.max === 'string' ? parseInt(range.max, 10) : range.max;
+    if (range.min < 0 && range.max < 0)
+        throw new Error('To use the letters rule, you need to specify number that is 0 or more for either `range.min` or `range.max`');
+    if (range.min < 0 && range.max >= 0)
+        return value.length <= range.max;
+    if (range.min >= 0 && range.max < 0)
+        return value.length >= range.min;
+    if (range.min > range.max)
+        throw new Error('You cannot specify a number larger than `range.max` in `range.min`');
+    if (range.min >= 0 && range.max >= 0)
+        return value.length >= range.min && value.length <= range.max;
+    return false;
+>>>>>>> master
 };
 
 var _rules = /*#__PURE__*/Object.freeze({
@@ -176,7 +213,12 @@ var _rules = /*#__PURE__*/Object.freeze({
   negativeNumber: negativeNumber,
   zero: zero,
   age: age,
+<<<<<<< HEAD
   equal: equal
+=======
+  equal: equal,
+  letters: letters
+>>>>>>> master
 });
 
 const charWidthMap = {};
@@ -266,7 +308,11 @@ var _plugins = /*#__PURE__*/Object.freeze({
 });
 
 const defaultRules = _rules;
+<<<<<<< HEAD
 const __unitNameSeed = (() => {
+=======
+const _unitNameSeed_ = (() => {
+>>>>>>> master
     const list = [];
     const makeSeed = () => {
         let seed = `k_${Math.floor(Math.random() * 1000).toString().padStart(4, '0')}`;
@@ -462,7 +508,11 @@ class Kensho {
             param.event = [param.event];
         }
         if (param.name === undefined)
+<<<<<<< HEAD
             param.name = __unitNameSeed();
+=======
+            param.name = _unitNameSeed_();
+>>>>>>> master
         const tagName = param.inputElement[0].tagName.toLowerCase();
         let type = '';
         if (tagName === 'input') {
@@ -535,7 +585,13 @@ class Kensho {
     }
     clear(unit) {
         unit.error = [];
+<<<<<<< HEAD
         unit.errorElement.innerHTML = '';
+=======
+        if (unit.displayError) {
+            unit.errorElement.innerHTML = '';
+        }
+>>>>>>> master
     }
     allClear() {
         this.inputsRules.forEach((val, key) => this.clear(this.getRuleUnit(key)));
@@ -567,7 +623,11 @@ class Kensho {
         for (const ruleName of unit.error) {
             if (ruleName === 'default')
                 continue;
+<<<<<<< HEAD
             const msg = unit.errorMessage[ruleName] === undefined ? `The value does not meet "${ruleName}" validation rule.` : unit.errorMessage[ruleName];
+=======
+            const msg = unit.errorMessage[ruleName] === undefined ? `The value failed "${ruleName}" validation rule.` : unit.errorMessage[ruleName];
+>>>>>>> master
             errors.push(`<${wrapper}>${msg}</${wrapper}>`);
         }
         const error = Kensho.config.verbose ? errors.join('') : `<${wrapper}>${unit.errorMessage.default}</${wrapper}>`;
@@ -613,3 +673,7 @@ for (const [pluginName, method] of Object.entries(_plugins)) {
 }
 
 exports.Kensho = Kensho;
+<<<<<<< HEAD
+=======
+//# sourceMappingURL=bundle.cjs.js.map
+>>>>>>> master

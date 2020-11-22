@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
-    "target": "ES2018",
-    "module":"ES6",
+    "target": "ESNext",
+    "module":"ESNext",
     "moduleResolution": "node",
     "strict": false,
     "baseUrl": "./",
     "outDir": "dist",
+    "esModuleInterop": true,
     "removeComments": true,
     "noImplicitThis": true,
     "paths": {

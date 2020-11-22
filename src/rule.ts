@@ -23,7 +23,8 @@ export interface RuleStore {
   'negativeNumber' : RuleType<string | number, {}, KenshoType>
   'zero'           : RuleType<string | number, {}, KenshoType>
   'age'            : RuleType<string | number, {max:number}, KenshoType>
-  'equal'          : RuleType<string, {others:string|string[]}>
+  'equal'          : RuleType<string, {others:string|string[], isInput?:boolean}>
+  'letters'        : RuleType<string, {range: { min?:string|number, max?:string|number}}>
 }
 
 export type GetRuleType<N extends string, S extends RuleStore = RuleStore> = N extends keyof S ? S[N] : RuleType<any, Object, KenshoType>
@@ -33,9 +34,9 @@ export type GetRuleType<N extends string, S extends RuleStore = RuleStore> = N e
 export const ruleBook: Map<string, any> = new Map()
 
 export const rule: {
-  add<V, O extends Object | undefined = undefined, K extends KenshoType | undefined = undefined>(name: string, callback: K extends undefined ? RuleType<V, O> : RuleType<V, O, K>): void
-  get<N extends string, S extends RuleStore = RuleStore>(name: N): N extends keyof S ? S[N] : SimpleRuleType
-  delete(name: string): void
+  add    : <V, O extends Object | undefined = undefined, K extends KenshoType | undefined = undefined>(name: string, callback: K extends undefined ? RuleType<V, O> : RuleType<V, O, K>) => void
+  get    : <N extends string, S extends RuleStore = RuleStore>(name: N) => N extends keyof S ? S[N] : SimpleRuleType
+  delete : (name: string) => void
 } = {
   /**
    * add rule

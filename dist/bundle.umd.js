@@ -6,8 +6,23 @@
 
 	var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
+<<<<<<< HEAD
 	function createCommonjsModule(fn, module) {
 		return module = { exports: {} }, fn(module, module.exports), module.exports;
+=======
+	function createCommonjsModule(fn, basedir, module) {
+		return module = {
+		  path: basedir,
+		  exports: {},
+		  require: function (path, base) {
+	      return commonjsRequire(path, (base === undefined || base === null) ? module.path : base);
+	    }
+		}, fn(module, module.exports), module.exports;
+	}
+
+	function commonjsRequire () {
+		throw new Error('Dynamic requires are not currently supported by @rollup/plugin-commonjs');
+>>>>>>> master
 	}
 
 	var check = function (it) {
@@ -1825,10 +1840,13 @@
 
 	hiddenKeys[METADATA] = true;
 	});
+<<<<<<< HEAD
 	var internalMetadata_1 = internalMetadata.REQUIRED;
 	var internalMetadata_2 = internalMetadata.fastKey;
 	var internalMetadata_3 = internalMetadata.getWeakData;
 	var internalMetadata_4 = internalMetadata.onFreeze;
+=======
+>>>>>>> master
 
 	var iterate_1 = createCommonjsModule(function (module) {
 	var Result = function (stopped, result) {
@@ -3165,7 +3183,11 @@
 	  if (typeof o === "string") return arrayLikeToArray(o, minLen);
 	  var n = Object.prototype.toString.call(o).slice(8, -1);
 	  if (n === "Object" && o.constructor) n = o.constructor.name;
+<<<<<<< HEAD
 	  if (n === "Map" || n === "Set") return Array.from(n);
+=======
+	  if (n === "Map" || n === "Set") return Array.from(o);
+>>>>>>> master
 	  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return arrayLikeToArray(o, minLen);
 	}
 
@@ -3382,9 +3404,15 @@
 	  }
 	});
 
+<<<<<<< HEAD
 	function _createForOfIteratorHelper(o) { if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (o = _unsupportedIterableToArray$1(o))) { var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var it, normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
 
 	function _unsupportedIterableToArray$1(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray$1(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(n); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$1(o, minLen); }
+=======
+	function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray$1(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+
+	function _unsupportedIterableToArray$1(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray$1(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$1(o, minLen); }
+>>>>>>> master
 
 	function _arrayLikeToArray$1(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
@@ -3499,7 +3527,13 @@
 	  return value <= max;
 	};
 	var equal = function equal(value, _ref5) {
+<<<<<<< HEAD
 	  var others = _ref5.others;
+=======
+	  var others = _ref5.others,
+	      _ref5$isInput = _ref5.isInput,
+	      isInput = _ref5$isInput === void 0 ? true : _ref5$isInput;
+>>>>>>> master
 	  var result = true;
 	  if (typeof others === 'string') others = [others];
 
@@ -3509,8 +3543,20 @@
 	  try {
 	    for (_iterator.s(); !(_step = _iterator.n()).done;) {
 	      var other = _step.value;
+<<<<<<< HEAD
 
 	      if (value !== other) {
+=======
+	      var otherValue = void 0;
+
+	      if (isInput) {
+	        otherValue = document.querySelector(other).value;
+	      } else {
+	        otherValue = other;
+	      }
+
+	      if (value !== otherValue) {
+>>>>>>> master
 	        result = false;
 	        break;
 	      }
@@ -3523,6 +3569,25 @@
 
 	  return result;
 	};
+<<<<<<< HEAD
+=======
+	var letters = function letters(value, _ref6) {
+	  var _ref6$range = _ref6.range,
+	      range = _ref6$range === void 0 ? {} : _ref6$range;
+	  range = Object.assign({
+	    min: -1,
+	    max: -1
+	  }, range);
+	  range.min = typeof range.min === 'string' ? parseInt(range.min, 10) : range.min;
+	  range.max = typeof range.max === 'string' ? parseInt(range.max, 10) : range.max;
+	  if (range.min < 0 && range.max < 0) throw new Error('To use the letters rule, you need to specify number that is 0 or more for either `range.min` or `range.max`');
+	  if (range.min < 0 && range.max >= 0) return value.length <= range.max;
+	  if (range.min >= 0 && range.max < 0) return value.length >= range.min;
+	  if (range.min > range.max) throw new Error('You cannot specify a number larger than `range.max` in `range.min`');
+	  if (range.min >= 0 && range.max >= 0) return value.length >= range.min && value.length <= range.max;
+	  return false;
+	};
+>>>>>>> master
 
 	var _rules = /*#__PURE__*/Object.freeze({
 		__proto__: null,
@@ -3538,7 +3603,12 @@
 		negativeNumber: negativeNumber,
 		zero: zero,
 		age: age,
+<<<<<<< HEAD
 		equal: equal
+=======
+		equal: equal,
+		letters: letters
+>>>>>>> master
 	});
 
 	var SPECIES$5 = wellKnownSymbol('species');
@@ -3849,14 +3919,24 @@
 		squash: squash
 	});
 
+<<<<<<< HEAD
 	function _createForOfIteratorHelper$1(o) { if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (o = _unsupportedIterableToArray$2(o))) { var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var it, normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
 
 	function _unsupportedIterableToArray$2(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray$2(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(n); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$2(o, minLen); }
+=======
+	function _createForOfIteratorHelper$1(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray$2(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+
+	function _unsupportedIterableToArray$2(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray$2(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$2(o, minLen); }
+>>>>>>> master
 
 	function _arrayLikeToArray$2(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 	var defaultRules = _rules;
 
+<<<<<<< HEAD
 	var __unitNameSeed = function () {
+=======
+	var _unitNameSeed_ = function () {
+>>>>>>> master
 	  var list = [];
 
 	  var makeSeed = function makeSeed() {
@@ -4121,7 +4201,11 @@
 	        param.event = [param.event];
 	      }
 
+<<<<<<< HEAD
 	      if (param.name === undefined) param.name = __unitNameSeed();
+=======
+	      if (param.name === undefined) param.name = _unitNameSeed_();
+>>>>>>> master
 	      var tagName = param.inputElement[0].tagName.toLowerCase();
 	      var type = '';
 
@@ -4204,7 +4288,14 @@
 	    key: "clear",
 	    value: function clear(unit) {
 	      unit.error = [];
+<<<<<<< HEAD
 	      unit.errorElement.innerHTML = '';
+=======
+
+	      if (unit.displayError) {
+	        unit.errorElement.innerHTML = '';
+	      }
+>>>>>>> master
 	    }
 	  }, {
 	    key: "allClear",
@@ -4271,7 +4362,11 @@
 	        for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
 	          var ruleName = _step4.value;
 	          if (ruleName === 'default') continue;
+<<<<<<< HEAD
 	          var msg = unit.errorMessage[ruleName] === undefined ? "The value does not meet \"".concat(ruleName, "\" validation rule.") : unit.errorMessage[ruleName];
+=======
+	          var msg = unit.errorMessage[ruleName] === undefined ? "The value failed \"".concat(ruleName, "\" validation rule.") : unit.errorMessage[ruleName];
+>>>>>>> master
 	          errors.push("<".concat(wrapper, ">").concat(msg, "</").concat(wrapper, ">"));
 	        }
 	      } catch (err) {
