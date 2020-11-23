@@ -4,7 +4,7 @@
   "description": "JavaScript validation library",
   "main": "dist/bundle.cjs.js",
   "module": "dist/bundle.es.js",
-  "browser": "dist/bundle.js",
+  "browser": "dist/bundle.iife.min.js",
   "types": "@types/index.d.ts",
   "scripts": {
     "start": "npm run build:es -- -w",

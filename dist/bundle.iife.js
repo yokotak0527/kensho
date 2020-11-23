@@ -1,4 +1,4 @@
-var yokotak0527 = (function () {
+var Kensho = (function () {
 	'use strict';
 
 	function getDefaultExportFromCjs (x) {
