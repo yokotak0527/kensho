@@ -35,7 +35,7 @@ Kensho.validate('email', 'private@myhost.com') // -> true
 
 ```js
 // JS
-// Assuming the use of "bundle.umd.js".s
+// Assuming the use of "bundle.umd.js".
 const form = new yokotak0527.Kensho('.form')
 
 // If you use 'bundle.esm.js' or 'bundle.cjs.js'...

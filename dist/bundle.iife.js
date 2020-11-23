@@ -1,4 +1,4 @@
-var hoge = (function () {
+var yokotak0527 = (function () {
 	'use strict';
 
 	function getDefaultExportFromCjs (x) {
