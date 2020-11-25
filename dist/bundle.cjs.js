@@ -334,6 +334,7 @@ const config = {
     errorMessageWrapper: 'span',
     verbose: true,
     errorClassName: 'kensho-has-error',
+    errorItemClassName: 'kensho-error-message',
     autocomplete: false,
     HTML5novalidate: true
 };
@@ -618,6 +619,7 @@ const _unitNameSeed_ = (() => {
 })();
 class Kensho {
     constructor(formSelector, option = {}) {
+        this.isDestroyed = false;
         option = Object.assign({
             search: true
         }, option);
@@ -628,8 +630,14 @@ class Kensho {
             formSelector = _form;
         }
         this.form = formSelector;
-        if (!Kensho.config.autocomplete)
-            this.form.setAttribute('autocomplete', 'off');
+        {
+            this.defaultHasAutoCompleteAttr = this.form.getAttribute('autocomplete') !== null ? true : false;
+            this.defaultAutoComplete = this.form.autocomplete;
+            if (!Kensho.config.autocomplete) {
+                this.form.setAttribute('autocomplete', 'off');
+                this.form.autocomplete = 'off';
+            }
+        }
         this.ruleUnits = new Map();
         this.form.classList.add('kensho-form');
         if (option.search) {
@@ -648,6 +656,18 @@ class Kensho {
     static use(pluginName, ...args) {
         const plugin = Kensho.plugin.get(pluginName).bind(Kensho);
         return plugin(...args);
+    }
+    destroy() {
+        this.form.autocomplete = this.defaultAutoComplete;
+        if (this.defaultHasAutoCompleteAttr) {
+            this.form.setAttribute('autocomplete', this.defaultAutoComplete);
+        }
+        else {
+            this.form.removeAttribute('autocomplete');
+        }
+        this.form.classList.remove('kensho-form');
+        this.removeAll();
+        this.isDestroyed = true;
     }
     addFromUnitElements(inputElmsData) {
         const attrPrefix = Kensho.config.customAttrPrefix;
@@ -813,22 +833,45 @@ class Kensho {
             type === 'datetime' || type === 'date' || type === 'month' ||
             type === 'week' || type === 'time' || type === 'datetime-local')
             type = 'text';
-        param.inputElement.forEach(elem => {
+        const eventHandlers = [];
+        param.inputElement.forEach((elem, elemNum) => {
             const events = param.event;
+            eventHandlers[elemNum] = {};
+            const handlers = eventHandlers[elemNum];
             events.forEach(event => {
-                elem.addEventListener(event, () => {
+                handlers[`kenshoEventHandler__${event}`] = () => {
                     this.validate(param.name);
-                });
+                };
+                elem.addEventListener(event, handlers[`kenshoEventHandler__${event}`]);
             });
         });
         const unit = Object.assign({}, param, {
             tagName,
             type,
             error: [],
+            eventHandlers,
             displayError: param.errorElement !== undefined
         });
         this.ruleUnits.set(unit.name, unit);
         return unit;
+    }
+    remove(ruleUnitName) {
+        const unit = this.getRuleUnit(ruleUnitName);
+        unit.inputElement.forEach((elem, elemNum) => {
+            unit.event.forEach(eventName => {
+                elem.removeEventListener(eventName, unit.eventHandlers[elemNum][`kenshoEventHandler__${eventName}`]);
+            });
+        });
+        this.ruleUnits.delete(ruleUnitName);
+    }
+    removeAll() {
+        const names = [];
+        this.ruleUnits.forEach(unit => {
+            names.push(unit.name);
+        });
+        names.forEach(name => {
+            this.remove(name);
+        });
     }
     hasError() {
         let hasError = false;
@@ -906,13 +949,14 @@ class Kensho {
             return;
         const errors = [];
         const wrapper = Kensho.config.errorMessageWrapper;
+        const errorItemClassName = Kensho.config.errorItemClassName;
         for (const ruleName of unit.error) {
             if (ruleName === 'default')
                 continue;
             const msg = errorMessage[ruleName] === undefined ? `The value failed "${ruleName}" validation rule.` : errorMessage[ruleName];
-            errors.push(`<${wrapper}>${msg}</${wrapper}>`);
+            errors.push(`<${wrapper} class="${errorItemClassName}">${msg}</${wrapper}>`);
         }
-        const error = Kensho.config.verbose ? errors.join('') : `<${wrapper}>${errorMessage.default}</${wrapper}>`;
+        const error = Kensho.config.verbose ? errors.join('') : `<${wrapper} class="${errorItemClassName}">${errorMessage.default}</${wrapper}>`;
         errorElement.innerHTML = error;
     }
     parseAttrString2Array(value) {
