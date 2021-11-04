@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "noEmit": true,
+    "declaration": false,
+    "declarationMap": false,
+    "baseUrl": "./",
+    "strict": true,
+    "sourceMap": false,
+    "importHelpers": true,
+    "allowJs": false,
+    "checkJs": false,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "removeComments": true,
+    "experimentalDecorators": true,
+    "skipLibCheck": false,
+    "isolatedModules": false,
+    "forceConsistentCasingInFileNames": true
+  }
+}
