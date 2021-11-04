@@ -1,11 +1,16 @@
 # Kensho
 
-The JavaScript validation package.
-
 ![NPM Download](https://img.shields.io/npm/dt/@yokotak0527/kensho)
 ![TravisCI](https://travis-ci.org/yokotak0527/kensho.svg?branch=master)
 ![open issue](https://img.shields.io/github/issues/yokotak0527/kensho)
 ![MIT licence](https://img.shields.io/github/license/yokotak0527/kensho)
+
+The JavaScript form validation package.
+
+This package has a form validation feature. If you simply want to validate the values, try [Kensho-core](https://github.com/yokotak0527/kensho-core).
+
+**Note** :  
+Destructive changes have been made since version 2.X. It is not compatible. If you need an older version, please use [Kensho-legacy](https://github.com/yokotak0527/kensho-legacy). 🙇‍♂️
 
 ## What can this do.
 
