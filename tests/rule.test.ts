@@ -7,6 +7,15 @@ describe(`Add the rule`, ()=>{
     expect(Kensho.rule.add('myRule', dummyRule)).toBeUndefined()
     Kensho.rule.remove('myRule')
   })
+  test(`OK : Add external ruleBook`, ()=>{
+    const ruleBook:Kensho.RuleBook = {
+      'isTrue'  : (value:boolean)=> value === true,
+      'isFalse' : (value:boolean)=> value === false
+    }
+    expect(Kensho.rule.book(ruleBook)).toBeUndefined()
+    Kensho.rule.remove('isTrue')
+    Kensho.rule.remove('isFalse')
+  })
   test(`NG : the rule already exist`, ()=>{
     Kensho.rule.add('myRule', dummyRule)
     expect(()=> Kensho.rule.add('myRule', dummyRule) ).toThrow()

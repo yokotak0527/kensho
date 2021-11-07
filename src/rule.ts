@@ -1,4 +1,4 @@
-export const ruleBook:Map<string, any> = new Map()
+const ruleBook:Map<string, any> = new Map()
 
 const rule:Kensho.Rule = {
   /**
@@ -32,7 +32,13 @@ const rule:Kensho.Rule = {
     const rule = ruleBook.get(name)
     if (rule === undefined) throw new Error(`The "${name}" rule isn't found.`)
     return rule
-  }
+  },
+  /**
+   * 
+   */
+  book(ruleBook:Kensho.RuleBook){
+    Object.entries(ruleBook).forEach(([name, rule]) => this.add(name, rule))
+  },
 }
 
 export default rule

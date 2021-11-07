@@ -1,5 +1,5 @@
 {
-  "name": "@yokotak0527/kensho-core",
+  "name": "@yokotak0527/kensho",
   "version": "2.6.1",
   "description": "",
   "main": "./dist/bundle.cjs.js",
@@ -12,13 +12,12 @@
     "browser": "./dist/bundle.umd.js",
     "default": "./dist/bundle.cjs.js"
   },
-  "types": "index.d.ts",
+  "types": "Kensho.d.ts",
   "files": [
     "dist/*",
     "@types/*",
-    "src/*",
     "package.json",
-    "index.d.ts",
+    "Kensho.d.ts",
     "LICENSE",
     "README.md"
   ],
@@ -27,6 +26,7 @@
     "build:cjs": "cross-env OUTPUT=cjs rollup -c",
     "build:umd": "cross-env OUTPUT=umd rollup -c",
     "build:iife": "cross-env OUTPUT=iife rollup -c",
+    "build:types": "cross-env OUTPUT=types rollup -c",
     "build": "npm run build:es && npm run build:cjs && npm run build:umd && npm run build:iife",
     "watch": "npm start",
     "lint": "eslint ./",

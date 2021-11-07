@@ -78,10 +78,4 @@ class Kensho {
 }
 
 module.exports = Kensho;
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
 //# sourceMappingURL=bundle.cjs.js.map
-=======
->>>>>>> e6df963 (add rule arc.)
->>>>>>> 3a2a0e0 (add rule arc.)

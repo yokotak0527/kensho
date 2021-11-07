@@ -84,10 +84,4 @@
     return Kensho;
 
 }));
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
 //# sourceMappingURL=bundle.umd.js.map
-=======
->>>>>>> e6df963 (add rule arc.)
->>>>>>> 3a2a0e0 (add rule arc.)

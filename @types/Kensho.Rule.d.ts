@@ -4,9 +4,11 @@ declare module Kensho {
    */
   type DefaultRuleFunction = (value:any, option?:any)=>boolean
   /**
-   * The rules key value store.  
-   * This store keys are rule name, values are rule function.  
-   * If you want to add your rules, extend this with d.ts file.
+   * EN : The rules key value store.`{ RULE-NAME : RULE-FUNCTION }`  
+   * If you want to add your rules, extend this with your `*.d.ts` file.  
+   * ---------------------------------------------------------------------------
+   * JP : ルールのキーバリューストア。`{ RULE-NAME : RULE-FUNCTION }`  
+   * ルールを追加したい場合は、`*.d.ts` ファイルで拡張してください。
    */
   interface RuleBook {}
   /**
@@ -14,19 +16,33 @@ declare module Kensho {
    */
   interface Rule {
     /**
-     * Add the rule.
-     * If same name rule already exists, this will throw an exception.
+     * EN : Add the rule.
+     *      If same name rule already exists, this will throw an exception.  
+     * -------------------------------------------------------------------------
+     * JP : ルールを追加します。  
+     *      同じ名前のルールが既に存在する場合、例外を投げます。
      */
     add<N extends string = keyof RuleBook, M = N extends keyof RuleBook ? RuleBook[N] : DefaultRuleFunction>(name:N, rule:M):void
     /**
-     * Remove the rule.
-     * If there isn't the specified name rule, this will throw an exception.
+     * EN : Remove the rule.
+     *      If there isn't the specified name rule, this will throw an exception.  
+     * -------------------------------------------------------------------------
+     * JP : ルールを削除します。
+     *      指定された名前のルールが存在しない場合、例外を投げます。
      */
     remove<N extends string = keyof RuleBook>(name:N):void
     /**
-     * Get the rule function.
-     * If there isn't the specified name rule, this will throw an exception.
+     * EN : Get the rule function.
+     *      If there isn't the specified name rule, this will throw an exception.  
+     * -------------------------------------------------------------------------
+     * JP : ルールを取得します。
+     *     指定された名前のルールが存在しない場合、例外を投げます。
      */
     get<N extends string = keyof RuleBook, R = N extends keyof RuleBook ? RuleBook[N] : DefaultRuleFunction>(name:N): R
+    /**
+     * EN : Add an external rulebook.  
+     * JP : 外部ルールブックを追加する。
+     */
+     book(book:Kensho.RuleBook):void
   }
 }

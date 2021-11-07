@@ -76,3 +76,4 @@ class Kensho {
 }
 
 export { Kensho as default };
+//# sourceMappingURL=bundle.es.js.map
