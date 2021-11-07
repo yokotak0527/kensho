@@ -22,7 +22,7 @@ declare module Kensho {
      * JP : ルールを追加します。  
      *      同じ名前のルールが既に存在する場合、例外を投げます。
      */
-    add<N extends string = keyof RuleBook, M = N extends keyof RuleBook ? RuleBook[N] : DefaultRuleFunction>(name:N, rule:M):void
+    add<N extends string = keyof RuleBook>(name:N, rule:N extends keyof RuleBook ? RuleBook[N] : DefaultRuleFunction):void
     /**
      * EN : Remove the rule.
      *      If there isn't the specified name rule, this will throw an exception.  
@@ -38,7 +38,7 @@ declare module Kensho {
      * JP : ルールを取得します。
      *     指定された名前のルールが存在しない場合、例外を投げます。
      */
-    get<N extends string = keyof RuleBook, R = N extends keyof RuleBook ? RuleBook[N] : DefaultRuleFunction>(name:N): R
+    get<N extends string = keyof RuleBook>(name:N): N extends keyof RuleBook ? RuleBook[N] : DefaultRuleFunction
     /**
      * EN : Add an external rulebook.  
      * JP : 外部ルールブックを追加する。
