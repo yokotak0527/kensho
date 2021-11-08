@@ -16,7 +16,6 @@
   "files": [
     "dist/*",
     "@types/*",
-    "src/Kensho.ts",
     "package.json",
     "Kensho.d.ts",
     "LICENSE",

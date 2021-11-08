@@ -35,7 +35,10 @@
             if (rule === undefined)
                 throw new Error(`The "${name}" rule isn't found.`);
             return rule;
-        }
+        },
+        book(ruleBook) {
+            Object.entries(ruleBook).forEach(([name, rule]) => this.add(name, rule));
+        },
     };
 
     const pluginBox = new Map();
@@ -74,9 +77,61 @@
         }
     };
 
+    const converterList = new Map();
+    const converter = {
+        add(name, converter) {
+            if (typeof name !== 'string')
+                throw new Error(`The argument "name" must be a string.`);
+            if (name === '')
+                throw new Error(`Empty string are not accepted.`);
+            if (typeof converter !== 'function')
+                throw new Error(`The argument "converter" must be a function.`);
+            if (converterList.get(name))
+                throw new Error(`The "${name}" converter already exist.`);
+            converterList.set(name, converter);
+        },
+        remove(name) {
+            if (typeof name !== 'string')
+                throw new Error(`The argument "name" must be a string.`);
+            if (name === '')
+                throw new Error(`Empty string are not accepted.`);
+            if (!converterList.get(name))
+                throw new Error(`The "${name}" converter isn't existed.`);
+            converterList.delete(name);
+        },
+        get(name) {
+            if (typeof name !== 'string')
+                throw new Error(`The argument "name" must be a string.`);
+            if (name === '')
+                throw new Error(`Empty string are not accepted.`);
+            const converter = converterList.get(name);
+            if (converter === undefined)
+                throw new Error(`The "${name}" converter isn't found.`);
+            return converter;
+        }
+    };
+
     class Kensho {
         static rule = rule;
         static plugin = plugin;
+        static converter = converter;
+        static validate(ruleName, value, ruleOption) {
+            const rule = this.rule.get(ruleName);
+            const result = rule(value, ruleOption);
+            return result;
+        }
+        static convert(value, converter) {
+            if (typeof converter === 'string')
+                converter = [converter];
+            converter.forEach(name => {
+                value = this.converter.get(name)(value);
+            });
+            const validate = this.validate;
+            return {
+                ...this,
+                validate: (ruleName, ruleOption) => validate(ruleName, value, ruleOption)
+            };
+        }
         constructor() {
         }
     }

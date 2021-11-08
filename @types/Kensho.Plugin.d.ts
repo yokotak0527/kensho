@@ -8,9 +8,7 @@ declare module Kensho {
    * This store keys are plugin name, values are plugin function.  
    * If you want to add your plugins, extend this with d.ts file.
    */
-  interface PluginList {
-    "test1" : ()=>boolean
-  }
+  interface PluginList {}
   /**
    * 
    */

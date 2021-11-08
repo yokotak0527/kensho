@@ -12,7 +12,9 @@ declare module Kensho {
    * `{ CONVERTER-NAME : CONVERTER-FUNCTION }`  
    * コンバータを追加したい場合は、`*.d.ts` ファイルで拡張してください。
    */
-  interface ConverterList {}
+  interface ConverterList {
+    "noop" : (value:any, option?:{})=>undefined
+  }
   interface Converter {
     /**
      * EN : Add the converter.

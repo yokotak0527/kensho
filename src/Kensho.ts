@@ -2,7 +2,10 @@ import rule      from './rule'
 import plugin    from './plugin'
 import converter from './converter'
 
-type RuleBook = Kensho.RuleBook
+// type alias
+type RuleBook      = Kensho.RuleBook
+type ConverterList = Kensho.ConverterList
+
 class Kensho {
   /** rule controller */
   static rule = rule
@@ -25,30 +28,29 @@ class Kensho {
   //   return result
   // }
   /**
-   * EN : convert the value.  
-   * JP : 値を変換する。
+   * EN : Use a converter to convert the value.  
+   *      it can be multiple specified.  
+   *      You can use generics to specify the input and output types
+   *      (I = input, O = output), but also you can infer them by passing an
+   *      array of converters as the `const`.
+   *      (if the definition of the converter is extended).  
+   * ---------------------------------------------------------------------------
+   * JP : コンバータを使用して値を変換します。  
+   *     コンバータは複数指定出来ます。  
+   *      generics を使って入力と出力の型を指定することもできますが
+   *      (I = 入力, O = 出力) コンバータの配列を `const` として渡すことで推論す
+   *      ることもできます。
+   *      (コンバータの定義が拡張されている場合に限る)
    */
-  // static convert(value:any, converter:string|string[]) {
-  //   // if(typeof converter === 'string') converter = [converter]
-  //   // converter.forEach(name => {
-  //   //   value = this.converter.get(name)(value)
-  //   // })
-  //   const validate = this.validate
-  //   return {
-  //     ...this,
-  //     validate : <N extends string = keyof RuleBook>(
-  //       ruleName    : N,
-  //       ruleOption? : N extends keyof RuleBook ? Parameters<RuleBook[N]>[1] : any
-  //     )=> validate(ruleName, value, ruleOption)
-  //   }
-  // }
-  // static convert(value:any, convertor){
-  //   return {
-  //     validate(){
-  //       this.validate()
-  //     }
-  //   }
-  // }
+  static convert<I = any, O = any, L extends readonly string[] = string[]>(
+    converter:L,
+    value : L extends readonly [infer A, ...(keyof ConverterList)[]] ? A extends (keyof ConverterList) ? Parameters<ConverterList[A]>[0] : I : I
+  ){
+    converter.forEach(name => {
+      value = this.converter.get(name)(value)
+    })
+    return value as unknown as L extends readonly [...(keyof ConverterList)[], infer B] ? B extends (keyof ConverterList) ? ReturnType<ConverterList[B]> : O : O
+  }
   /**
    * 
    */
