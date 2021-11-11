@@ -39,6 +39,11 @@
     "validation",
     "TypeScript"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yokotak0527/kensho.git"
+  },
+  "homepage": "https://github.com/yokotak0527/kensho#readme",
   "author": "yokotak0527",
   "license": "MIT",
   "devDependencies": {
