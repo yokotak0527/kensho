@@ -36,9 +36,9 @@ const rule:Kensho.Rule = {
   /**
    * 
    */
-  book(ruleBook:Kensho.RuleBook){
+  import(ruleBook:Kensho.RuleBook){
     Object.entries(ruleBook).forEach(([name, rule]) => this.add(name, rule))
-  },
+  }
 }
 
 export default rule

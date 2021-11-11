@@ -12,7 +12,7 @@ describe(`Add the rule`, ()=>{
       'isTrue'  : (value:boolean)=> value === true,
       'isFalse' : (value:boolean)=> value === false
     }
-    expect(Kensho.rule.book(ruleBook)).toBeUndefined()
+    expect(Kensho.rule.import(ruleBook)).toBeUndefined()
     Kensho.rule.remove('isTrue')
     Kensho.rule.remove('isFalse')
   })

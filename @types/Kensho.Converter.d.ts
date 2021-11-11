@@ -1,4 +1,4 @@
-declare module Kensho {
+declare namespace Kensho {
   /**
    * 
    */
@@ -12,9 +12,7 @@ declare module Kensho {
    * `{ CONVERTER-NAME : CONVERTER-FUNCTION }`  
    * コンバータを追加したい場合は、`*.d.ts` ファイルで拡張してください。
    */
-  interface ConverterList {
-    "noop" : (value:any, option?:{})=>undefined
-  }
+  interface ConverterBox {}
   interface Converter {
     /**
      * EN : Add the converter.
@@ -23,7 +21,7 @@ declare module Kensho {
      * JP : コンバータを追加します。  
      *      同じ名前のコンバータが既に存在する場合、例外を投げます。
      */
-    add<N extends string = keyof ConverterList>(name:N, converter:N extends keyof ConverterList ? ConverterList[N] : DefaultConverterFunction):void
+    add<N extends string = keyof ConverterBox>(name:N, converter:N extends keyof ConverterBox ? ConverterBox[N] : DefaultConverterFunction):void
     /**
      * EN : Remove the converter.
      *      If there isn't the specified name converter, this will throw an exception.  
@@ -31,7 +29,7 @@ declare module Kensho {
      * JP : コンバータを削除します。
      *      指定された名前のコンバータが存在しない場合、例外を投げます。
      */
-    remove<N extends string = keyof ConverterList>(name:N):void
+    remove<N extends string = keyof ConverterBox>(name:N):void
     /**
      * EN : Get the converter function.
      *      If there isn't the specified name converter, this will throw an exception.  
@@ -39,6 +37,11 @@ declare module Kensho {
      * JP : コンバータを取得します。
      *     指定された名前のコンバータが存在しない場合、例外を投げます。
      */
-    get<N extends string = keyof ConverterList>(name:N): N extends keyof ConverterList ? ConverterList[N] : DefaultConverterFunction
+    get<N extends string = keyof ConverterBox>(name:N): N extends keyof ConverterBox ? ConverterBox[N] : DefaultConverterFunction
+    /**
+     * EN : add an external converter collection  
+     * JP : 外部のコンバータコレクションを追加する。
+     */
+    import(collection:ConverterBox):void
   }
 }

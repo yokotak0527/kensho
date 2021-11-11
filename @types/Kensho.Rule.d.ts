@@ -1,4 +1,4 @@
-declare module Kensho {
+declare namespace Kensho {
   /**
    * 
    */
@@ -41,8 +41,8 @@ declare module Kensho {
     get<N extends string = keyof RuleBook>(name:N): N extends keyof RuleBook ? RuleBook[N] : DefaultRuleFunction
     /**
      * EN : Add an external rulebook.  
-     * JP : 外部ルールブックを追加する。
+     * JP : 外部のルールブックを追加する。
      */
-     book(book:Kensho.RuleBook):void
+    import(book:Kensho.RuleBook):void
   }
 }
