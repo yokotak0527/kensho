@@ -3,5 +3,5 @@
 /// <reference types="./@types/Kensho.Converter" />
 /// <reference types="./@types/utils" />
 
-declare const Kensho: Kensho
+declare const Kensho: KenshoInterface
 export default Kensho

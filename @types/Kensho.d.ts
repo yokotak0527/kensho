@@ -1,4 +1,6 @@
+type Converter    = Kensho.Converter
 type ConverterBox = Kensho.ConverterBox
+type Rule         = Kensho.Rule
 type RuleBook     = Kensho.RuleBook
 
 declare namespace Kensho {
@@ -22,21 +24,21 @@ declare namespace Kensho {
   }
 }
 
-declare interface Kensho {
+declare interface KenshoInterface {
   /**
    * global config.
    */
-  config : {
-    validate : Kensho.ValidateOptions
+  config: {
+    validate: Kensho.ValidateOptions
   },
   /**
    * rule controller
    */
-  rule:Kensho.Rule
+  rule: Rule
   /**
    * converter controller
    */
-  converter:Kensho.Converter
+  converter: Converter
   /**
    * EN : Use a converter to convert the value.  
    *      You can also specify multiple converters by passing an array.  

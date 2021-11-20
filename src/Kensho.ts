@@ -1,7 +1,7 @@
 import rule      from './rule'
 import converter from './converter'
 
-const Kensho:Kensho = {
+const Kensho:KenshoInterface = {
   /**
    * 
    */
@@ -38,7 +38,7 @@ const Kensho:Kensho = {
    * 
    */
   validate(name, value, ruleOption, option = {}) {
-    /** rule function */
+    /** rule funsction */
     const rule = Kensho.rule.get(name)
 
     const fixOption = Object.assign({}, Kensho.config.validate, option) as Kensho.ValidateOptions
