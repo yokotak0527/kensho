@@ -21,16 +21,8 @@ How to import and create it is explained below. There is also a generic rule and
 
 # Install
 
-## npm
-
 ```bash
 $ npm i @yokotak0527/kensho
-```
-
-## CDN
-
-```html
-<script src="https://cdn.jsdelivr.net/npm/@yokotak0527/kensho/dist/bundle.iife.min.js"></script>
 ```
 
 # Setup
