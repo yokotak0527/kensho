@@ -1,6 +1,6 @@
 {
   "name": "@yokotak0527/kensho",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "",
   "main": "./dist/bundle.cjs.js",
   "module": "./dist/bundle.es.js",
